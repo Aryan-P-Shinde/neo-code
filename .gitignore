@@ -1,8 +1,7 @@
-# Dataset — too large for git
+# Dataset — organizer's proprietary data
 candidates.jsonl
-top200_results.json
 
-# Intermediate submission files
+# Intermediate submission iterations
 submission_v1.csv
 submission_v2.csv
 
