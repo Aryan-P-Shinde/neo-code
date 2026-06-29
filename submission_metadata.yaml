@@ -18,11 +18,11 @@ team_members:
 # ============================================================================
 # Code and reproducibility
 # ============================================================================
-github_repo: "https://github.com/YOUR_USERNAME/YOUR_REPO"
+github_repo: "https://github.com/Aryan-P-Shinde/neo-code"
 # Required. Must be reachable. Private repos OK if you can grant organizer
 # access at Stage 3 (the email to add will be communicated then).
 
-sandbox_link: "https://huggingface.co/spaces/YOUR_USERNAME/redrob-ranker"
+sandbox_link: "https://neo-code-main.streamlit.app/"
 # Required. A working hosted environment where the ranker can be run on a small
 # candidate sample. See Section 10.5 of submission_spec.md for acceptable
 # platforms (HuggingFace Spaces, Streamlit Cloud, Replit, Colab, Docker, Binder).
@@ -31,58 +31,52 @@ reproduce_command: "python rank.py --candidates ./candidates.jsonl --out ./submi
 # The single command that produces submission.csv from candidates.jsonl.
 # Should run end-to-end within 5 minutes on CPU with 16GB RAM and no network.
 
-# ============================================================================
-# Compute environment
-# ============================================================================
 compute:
-  platform: "MacBook Pro M2"                    # Or: "AWS EC2 c5.4xlarge", "Local Linux box", etc.
-  cpu_cores: 8                                  # Number of CPU cores used
-  ram_gb: 16                                    # Available RAM in GB
-  python_version: "3.11.4"                      # python --version
-  os: "macOS 14.2"                              # Or "Ubuntu 22.04 LTS", etc.
-  uses_gpu_for_inference: false                 # Must be false — see compute constraints
-  has_network_during_ranking: false             # Must be false — no API calls during ranking
-  pre_computation_required: false               # true if you pre-compute embeddings or train models offline
-  pre_computation_time_minutes: 0               # Approximate, if applicable
+  platform: "Windows 11 Laptop"
+  cpu_cores: 8
+  ram_gb: 16
+  python_version: "3.11.x"
+  os: "Windows 11"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: false
+  pre_computation_time_minutes: 0
 
-# ============================================================================
-# AI tools declaration
-# ============================================================================
-# Transparency only — declared use is NOT penalized. Be honest. Stage 5 interview
-# may verify these declarations against your code; declarations that contradict
-# your code or your interview are flagged.
 ai_tools_used:
-  - "Claude"        # e.g. for architecture discussion, code review
-  - "GitHub Copilot"  # e.g. for autocomplete
-  # Other options: "ChatGPT", "Cursor", "Gemini", "Codeium", "Other", "None"
+  - "Claude"
 
 ai_usage_summary: |
-  Briefly describe how AI tools were used. Examples:
-  - "Used Claude for code review and architectural discussion. Used Copilot for autocomplete.
-     No candidate data was fed to any LLM."
-  - "Used ChatGPT to debug Python issues and Cursor for refactoring."
-  - "No AI tools used."
+  Used Claude as a coding and architecture assistant. Problem decomposition,
+  scoring design decisions, and understanding of the dataset were developed
+  collaboratively. All code was reviewed, understood, and tested locally.
+  No candidate data was fed to any LLM during ranking.
 
-# ============================================================================
-# Approach summary (optional but recommended)
-# ============================================================================
 methodology_summary: |
-  ≤200 word summary of your approach. Strongly recommended.
+  Three-layer evidence-based ranker. Scores what a candidate's history proves,
+  not what their profile claims.
 
-  Example:
-  "Rule-based ranker with explicit reasoning capture. Five scoring components
-  (skills, title+career, experience years, location, education) combined with
-  a multiplicative behavioral-signal modifier. The title component is the
-  decisive signal against keyword-stuffer traps; an endorsement-and-duration
-  trust multiplier on skills catches lazy keyword stuffing. Runtime is ~10
-  seconds for 50K candidates on CPU."
+  Layer 1 — Role Fit (weighted sum): title trajectory and career progression
+  toward ML/AI (25%), career description evidence — specific technical terms
+  found in job description text, not skills section (35%), experience range fit
+  against JD's 5-9yr target (15%), location preference for Pune/Noida/India (10%),
+  product vs consulting company background (15%).
 
-# ============================================================================
-# Declarations
-# ============================================================================
+  Layer 2 — Evidence Quality multiplier (0.6–1.25x): cross-references skill
+  proficiency claims against duration months, platform assessment scores, and
+  endorsements. Catches keyword stuffers whose claimed expertise doesn't hold
+  up under scrutiny.
+
+  Layer 3 — Availability multiplier (0.45–1.0x): behavioral gate using last
+  active date, recruiter response rate, notice period, and open-to-work flag.
+  Hard ceiling applied to candidates inactive 6+ months with <15% response rate.
+
+  Honeypot detection runs before scoring — flags profiles with impossible YoE
+  vs career span, assessment scores contradicting claimed proficiency, and
+  duration-proficiency mismatches. Runtime: ~30 seconds on CPU for 100K candidates.
+
 declarations:
-  read_submission_spec: true        # I have read submission_spec.md in full
-  code_is_original_work: true       # My code is my team's original work (using AI as a tool is fine)
-  no_collusion: true                # I have not coordinated my submission with other teams
-  honeypot_check_done: false        # OPTIONAL — set true if you explicitly checked for honeypots in your ranking
-  reproduction_tested: true         # I have tested that my reproduce_command runs end-to-end
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true
