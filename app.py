@@ -138,7 +138,7 @@ st.markdown("""
 @st.cache_data
 def load_precomputed():
     """Load pre-computed results if available."""
-    p = Path("top200_results.json")
+    p = Path(__file__).parent / "top200_results.json"
     if p.exists():
         with open(p) as f:
             return json.load(f)
